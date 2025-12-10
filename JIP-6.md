@@ -8,7 +8,7 @@ The trace format captures the state of the PVM during execution. Most fields are
 
 Data is encoded using the standard JAM codec, also called GP codec. All numbers use variable-length encoding as defined in the Gray Paper.
 
-The format is binary. Alternatively, the data can be hex-encoded and delimited by newlines.
+The format is binary. Alternatively, the data can be base64-encoded and delimited by newlines.
 
 ## Trace versions
 
