@@ -51,9 +51,10 @@ performed while executing the call.
 ### `ecalli` line
 
 ```
-ecalli pc={pc} gas={gas} {register-dump}
+ecalli={index} pc={pc} gas={gas} {register-dump}
 ```
 
+- `{index}`: decimal host call index being invoked.
 - `{pc}`: decimal program counter pointing to the `ecalli` opcode.
 - `{gas}`: gas value before executing the host call.
 - `{register-dump}`: space-delimited list of `r{idx}={value}` pairs covering all
@@ -104,7 +105,7 @@ It should be possible to compare two execution logs from different implementatio
 
 ## Execution Termination
 
-The log MUST end with a termination line indicating how program execution concluded. The termination line follows the same format as the `ecalli` line:
+The log MUST end with a termination line indicating how program execution concluded. The termination line follows a similar format to the `ecalli` line:
 
 ```
 {TERMINATION_TYPE} pc={pc} gas={gas} {register-dump}
@@ -129,7 +130,7 @@ context accumulate
 program 0x0102aabbccddeeff
 memwrite 0x00001000 len=8 <- 0x0000000000000001
 
-ecalli pc=0 gas=10000 r01=0x1 r03=0x1000
+ecalli=10 pc=0 gas=10000 r01=0x1 r03=0x1000
 memread 0x00001000 len=4 -> 0x01020304
 memread 0x00001020 len=8 -> 0x0000000000000040
 memwrite 0x00002000 len=2 <- 0xffee
