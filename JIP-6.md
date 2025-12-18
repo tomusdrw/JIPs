@@ -36,10 +36,10 @@ Next, any initial memory writes are expected. Each line uses the IO
 syntax defined later. In JAM context this will contain SPI arguments.
 
 ```
-write_memory {address} <- {hex-encoded-bytes}
+memwrite {hex-encoded-address} len={blob-byte-length} <- {hex-encoded-bytes}
 ```
 
-`{address}` is a 0x-prefixed 32-bit hex value. `{hex-encoded-bytes}` is an
+`{hex-encoded-address}` is a 0x-prefixed 32-bit hex value. `{blob-byte-length}` is the decimal length in bytes of the data blob. `{hex-encoded-bytes}` is an
 even-length lowercase hex string containing full data that should be written to program memory after its initialization.
 
 ## Ecalli entry format
@@ -67,19 +67,19 @@ four action types, emitted in the following order:
 
 1. **Memory reads** - ordered by increasing address
 
-   `read_memory {address} -> {hex-encoded-data-read}`
+   `memread {hex-encoded-address} len={blob-byte-length} -> {hex-encoded-data-read}`
 
 2. **Memory writes** - ordered by increasing address
 
-   `write_memory {address} <- {hex-encoded-data-to-write}`
+   `memwrite {hex-encoded-address} len={blob-byte-length} <- {hex-encoded-data-to-write}`
 
 3. **Register writes** - ordered by ascending register index
 
-   `set_register r{idx} <- {hex-encoded-value}`
+   `setreg r{idx} <- {hex-encoded-value}`
 
 4. **Gas overwrite** - single entry altering the remaining gas. It's the last expected line so it's assumed that after that line the VM resumes.
 
-   `set_gas <- {gas}`
+   `setgas <- {gas}`
 
 Addresses and values follow the same encoding rules as specified earlier.
 
@@ -127,15 +127,15 @@ implementation typeberry 0.8.3
 chain-id fluffy-testnet
 context accumulate
 program 0x0102aabbccddeeff
-write_memory 0x00001000 <- 0x0000000000000001
+memwrite 0x00001000 len=8 <- 0x0000000000000001
 
 ecalli pc=0 gas=10000 r01=0x1 r03=0x1000
-read_memory 0x00001000 -> 0x01020304
-read_memory 0x00001020 -> 0x0000000000000040
-write_memory 0x00002000 <- 0xffee
-set_register r00 <- 0x100
-set_register r02 <- 0x4
-set_gas <- 9950
+memread 0x00001000 len=4 -> 0x01020304
+memread 0x00001020 len=8 -> 0x0000000000000040
+memwrite 0x00002000 len=2 <- 0xffee
+setreg r00 <- 0x100
+setreg r02 <- 0x4
+setgas <- 9950
 
 HALT pc=42 gas=9920 r00=0x100 r02=0x4
 ```
