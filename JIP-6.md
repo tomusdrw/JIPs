@@ -15,7 +15,7 @@ are ignored. Note the line does not need to match fully to the format - it may h
 
 ### Formatting guideliness
 
-Hex-encoded data must be prefixed with `0x` for visual distinction from decimal numbers. If number formatting is not explicitly specified, hex- encoding must be used. The format also uses hex encoding for large data blobs, despite these being larger than e.g. base64, to allow simpler sub-blob searches (e.g. a particular constant value can be searched in read/written memory blobs).
+Hex-encoded data must be prefixed with `0x` for visual distinction from decimal numbers. If number formatting is not explicitly specified, decimal encoding must be used. The format also uses hex encoding for large data blobs, despite these being larger than e.g. base64, to allow simpler sub-blob searches (e.g. a particular constant value can be searched in read/written memory blobs).
 
 ### Context log lines (optional)
 
@@ -26,7 +26,7 @@ which should contain:
 
 ### Required prelude
 
-The first mandatory log line must contain the program blob being executed, including metadata. In the JAM context this will be the service's code hash preimage value.
+The first mandatory log line must contain the program blob being executed, including metadata (if any). In JAM context this will be the service's code hash preimage value.
 
 ```
 program {hex-encoded-program-with-metadata}
