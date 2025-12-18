@@ -108,13 +108,14 @@ It should be possible to compare two execution logs from different implementatio
 The log MUST end with a termination line indicating how program execution concluded. The termination line follows a similar format to the `ecalli` line:
 
 ```
-{TERMINATION_TYPE} pc={pc} gas={gas} {register-dump}
+PANIC={argument} pc={pc} gas={gas} {register-dump}
+OOG pc={pc} gas={gas} {register-dump}
+HALT pc={pc} gas={gas} {register-dump}
 ```
 
-- `{TERMINATION_TYPE}`: One of the following:
-  - `HALT` - Program terminated normally
-  - `PANIC` - Program terminated abnormally (trap, invalid instruction, etc.)
-  - `OOG` - Program ran out of gas
+- `PANIC={argument}` - Program terminated abnormally (trap code, invalid instruction code, invalid memory access, etc.)
+- `OOG` - Program ran out of gas
+- `HALT` - Program terminated normally
 - `{pc}`: Decimal program counter at termination
 - `{gas}`: Remaining gas at termination, saturated at 0 in case of underflow
 - `{register-dump}`: Space-delimited list of `r{idx}={value}` pairs following the same encoding rules as the `ecalli` line (zero values omitted, 0-padded decimal indices, 0x-prefixed hex values)
