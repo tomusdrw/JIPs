@@ -42,6 +42,16 @@ memwrite {hex-encoded-address} len={blob-byte-length} <- {hex-encoded-bytes}
 `{hex-encoded-address}` is a 0x-prefixed 32-bit hex value. `{blob-byte-length}` is the decimal length in bytes of the data blob. `{hex-encoded-bytes}` is an
 even-length lowercase hex string containing full data that should be written to program memory after its initialization.
 
+Finally, the initial execution state must be recorded:
+
+```
+start pc={pc} gas={gas} {register-dump}
+```
+
+- `{pc}`: decimal program counter at which execution begins.
+- `{gas}`: initial gas value.
+- `{register-dump}`: space-delimited list of `r{idx}={value}` pairs covering all non-zero registers at the start of execution. Registers with a zero value MUST be omitted. Register indices are 0-padded decimal values sorted ascending. Values are 0x-prefixed 64-bit hex with no padding and leading zeros trimmed.
+
 ## Ecalli entry format
 
 An IO log entry begins whenever the VM executes an `ecalli` opcode. Entries are
@@ -130,8 +140,9 @@ chain-id fluffy-testnet
 context accumulate
 program 0x0102aabbccddeeff
 memwrite 0x00001000 len=8 <- 0x0000000000000001
+start pc=0 gas=10000 r07=0x10 r09=0x10000
 
-ecalli=10 pc=0 gas=10000 r01=0x1 r03=0x1000
+ecalli=10 pc=42 gas=9980 r01=0x1 r03=0x1000
 memread 0x00001000 len=4 -> 0x01020304
 memread 0x00001020 len=8 -> 0x0000000000000040
 memwrite 0x00002000 len=2 <- 0xffee
